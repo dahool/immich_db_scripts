@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-DBOWNER="postgres"
-DBNAME="immich"
-CONTAINER="immich_postgres"
-SCRIPTS_DIR="./sql"
+DBOWNER="${DBOWNER:-postgres}"
+DBNAME="${DBNAME:-immich}"
+CONTAINER="${PGCONTAINER:-immich_postgres}"
 
 docker exec -i $CONTAINER psql -U $DBOWNER -d $DBNAME <<'EOF'
 CREATE TABLE IF NOT EXISTS public.local_migration (
