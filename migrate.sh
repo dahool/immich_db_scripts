@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS public.local_migration (
 );
 EOF
 
-for file in "$SCRIPTS_DIR"/*.sql; do
+for file in "/app/sql/*.sql; do
   [ -e "$file" ] || continue
 
   script_name=$(basename "$file")
