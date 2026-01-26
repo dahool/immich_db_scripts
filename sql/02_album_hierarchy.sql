@@ -1,4 +1,3 @@
-
 CREATE OR REPLACE FUNCTION public.album_asset_propagate()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -6,10 +5,11 @@ DECLARE
     names text[];
     target_name text;
     target_album_id uuid;
+    original_owner_id uuid;
 BEGIN
-
-    SELECT "albumName"
-    INTO album_name
+    -- Obtener nombre y owner del álbum original
+    SELECT "albumName", "ownerId"
+    INTO album_name, original_owner_id
     FROM public.album
     WHERE id = NEW."albumId";
 
@@ -22,9 +22,11 @@ BEGIN
     FOREACH target_name IN ARRAY names LOOP
         target_name := btrim(target_name);
 
+        -- Buscar álbum destino con mismo nombre y mismo owner
         SELECT id INTO target_album_id
         FROM public.album
         WHERE "albumName" = target_name
+          AND "ownerId" = original_owner_id
         LIMIT 1;
 
         IF target_album_id IS NOT NULL AND target_album_id <> NEW."albumId" THEN
