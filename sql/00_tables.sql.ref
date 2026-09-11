@@ -1,0 +1,25 @@
+-- Table: public.albums_persons
+
+-- DROP TABLE IF EXISTS public.albums_persons;
+
+CREATE TABLE IF NOT EXISTS public.albums_persons
+(
+    "albumId" uuid NOT NULL,
+    "personId" uuid NOT NULL,
+    "ownerId" uuid,
+    CONSTRAINT fk_albums FOREIGN KEY ("albumId")
+        REFERENCES public.album (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT fk_person_group FOREIGN KEY ("ownerId", "personId")
+        REFERENCES public.person ("ownerId", "personGroupId") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.albums_persons
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.albums_persons TO postgres;
