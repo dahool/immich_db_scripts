@@ -36,3 +36,9 @@ REFERENCES public.person ("ownerId", "personGroupId")
 MATCH SIMPLE
 ON UPDATE NO ACTION
 ON DELETE CASCADE;
+
+ALTER TABLE public.albums_persons
+    ALTER COLUMN "ownerId" SET NOT NULL;
+
+CREATE UNIQUE INDEX IF NOT EXISTS albums_persons_album_owner_person_uidx
+    ON public.albums_persons ("albumId", "ownerId", "personId");
