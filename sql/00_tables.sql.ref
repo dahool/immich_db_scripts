@@ -23,3 +23,16 @@ ALTER TABLE IF EXISTS public.albums_persons
     OWNER to postgres;
 
 GRANT ALL ON TABLE public.albums_persons TO postgres;
+
+-- Drop the existing restriction constraint
+ALTER TABLE public.albums_persons 
+DROP CONSTRAINT fk_person_group;
+
+-- Recreate it with CASCADE delete enabled
+ALTER TABLE public.albums_persons 
+ADD CONSTRAINT fk_person_group 
+FOREIGN KEY ("ownerId", "personId")
+REFERENCES public.person ("ownerId", "personGroupId") 
+MATCH SIMPLE
+ON UPDATE NO ACTION
+ON DELETE CASCADE;
